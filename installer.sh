@@ -101,3 +101,19 @@ cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key,ca.crt} /etc/openvpn || err
 cp /tmp/openvpn_installer/client.ovpn /etc/openvpn/client.ovpn || error
 
 echo "remote ${server_addr} ${port}" >> /etc/openvpn/client.ovpn
+
+/etc/openvpn/easy-rsa/build-key client
+
+cd ..
+
+echo "<ca>" >> /etc/openvpn/easy-rsa/client.ovpn
+cat easy-rsa/keys/ca.crt >> /etc/openvpn/easy-rsa/client.ovpn
+echo "</ca>" >> /etc/openvpn/easy-rsa/client.ovpn
+
+echo "<cert>" >> /etc/openvpn/easy-rsa/client.ovpn
+cat easy-rsa/keys/client.crt >> /etc/openvpn/easy-rsa/client.ovpn
+echo "</cert>" >> /etc/openvpn/easy-rsa/client.ovpn
+
+echo "<key>" >> /etc/openvpn/easy-rsa/client.ovpn
+cat easy-rsa/keys/client.key >> /etc/openvpn/easy-rsa/client.ovpn
+echo "</key>" >> /etc/openvpn/easy-rsa/client.ovpn
