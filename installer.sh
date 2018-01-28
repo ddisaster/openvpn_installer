@@ -62,8 +62,11 @@ for i in $route; do
 		interface=${i}
 	fi
 done
-cp /etc/network/interfaces /etc/network/interfaces.backup
-grep 
+mv /etc/network/interfaces /etc/network/interfaces.backup
+grep -v ${interface} /etc/network/interfaces.backup > /etc/network/interfaces
+echo "iface ${interface} inet static" >> /etc/network/interfaces
+echo "   address ${server_ip}" >> /etc/network/interfaces
+echo "   gateway ${gateway}" >> /etc/network/interfaces
 
 # generate config file
 git clone https://github.com/ddisaster/openvpn_installer.git /tmp/openvpn_installer || error
@@ -94,3 +97,7 @@ source vars || error
 ./build-key-server server || error
 
 cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key,ca.crt} /etc/openvpn || error
+
+cp /tmp/openvpn_installer/client.ovpn /etc/openvpn/client.ovpn || error
+
+echo "remote ${server_addr} ${port}" >> /etc/openvpn/client.ovpn
