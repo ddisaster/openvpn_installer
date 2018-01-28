@@ -49,7 +49,9 @@ rm /etc/sysctl.conf.bak || error
 sysctl -w net.ipv4.ip_forward=1 || error
 
 # generate keys
-cp -r /usr/share/easy-rsa/ /etc/openvpn || error
+rm -r /etc/openvpn
+mkdir /etc/openvpn
+cp -r /usr/share/easy-rsa /etc/openvpn/easy-rsa || error
 mkdir /etc/openvpn/easy-rsa/keys
 
 route=$(ip route | grep default)
@@ -69,16 +71,18 @@ echo "   address ${server_ip}" >> /etc/network/interfaces
 echo "   gateway ${gateway}" >> /etc/network/interfaces
 
 # generate config file
-git clone https://github.com/ddisaster/openvpn_installer.git /tmp/openvpn_installer || error
+tempfolder=$(mktemp -d)
+git clone https://github.com/ddisaster/openvpn_installer.git ${tempfolder} || error
 
-cp /tmp/openvpn_installer/server.conf /etc/openvpn/server.conf
+cp ${tempfolder}/server.conf /etc/openvpn/server.conf || error
 
 echo "port ${port}" >> /etc/openvpn/server.conf
 echo "server ${vpn_network} 255.255.255.0" >> /etc/openvpn/server.conf
 echo "push \"route ${cust_network} ${cust_netmask}\"" >> /etc/openvpn/server.conf
 echo "route ${cust_network} ${cust_netmask}" >> /etc/openvpn/server.conf
 
-cp /tmp/openvpn_installer/vars /etc/openvpn/easy-rsa/vars
+rm /etc/openvpn/easy-rsa/vars
+cp ${tempfolder}/vars /etc/openvpn/easy-rsa/vars || error
 
 echo "export KEY_COUNTRY=\"${country}\"" >> /etc/openvpn/easy-rsa/vars
 echo "export KEY_PROVINCE=\"${province}\"" >> /etc/openvpn/easy-rsa/vars
@@ -88,23 +92,23 @@ echo "export KEY_EMAIL=\"${mail}\"" >> /etc/openvpn/easy-rsa/vars
 echo "export KEY_OU=\"${ounit}\"" >> /etc/openvpn/easy-rsa/vars
 
 
-penssl dhparam -out /etc/openvpn/dh2048.pem 2048 || error
+openssl dhparam -out /etc/openvpn/dh2048.pem 2048 || error
+
+cp /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
 
 cd /etc/openvpn/easy-rsa
 source vars || error
 ./clean-all || error
-./build-ca || error
+echo -e "\n\n\n\n\n\n\n\n" | ./build-ca || error
 ./build-key-server server || error
 
 cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key,ca.crt} /etc/openvpn || error
 
-cp /tmp/openvpn_installer/client.ovpn /etc/openvpn/client.ovpn || error
+cp ${tempfolder}/client.ovpn /etc/openvpn/client.ovpn || error
 
 echo "remote ${server_addr} ${port}" >> /etc/openvpn/client.ovpn
 
 /etc/openvpn/easy-rsa/build-key client
-
-cd ..
 
 echo "<ca>" >> /etc/openvpn/easy-rsa/client.ovpn
 cat easy-rsa/keys/ca.crt >> /etc/openvpn/easy-rsa/client.ovpn
