@@ -75,9 +75,6 @@ cat /etc/sysctl.conf.bak | sed -e "s/#net.ipv4.ip_forward=0/net.ipv4.ip_forward=
 rm /etc/sysctl.conf.bak || error
 sysctl -w net.ipv4.ip_forward=1 || error
 
-cat ${tempfolder}/iptables-nat.service | sed -e "s/INTERFACE/${interface}/g" > /etc/systemd/system/iptables-nat.service
-systemctl enable iptables-nat.service
-
 # generate keys
 rm -r /etc/openvpn
 mkdir /etc/openvpn || error
@@ -149,6 +146,9 @@ gcc -o /etc/openvpn/userauth ${tempfolder}/userauth.c || error
 echo "${user}:${password}" > /etc/openvpn/user.txt || error
 
 mkdir /etc/openvpn/ccd || error
+
+cat ${tempfolder}/iptables-nat.service | sed -e "s/INTERFACE/${interface}/g" > /etc/systemd/system/iptables-nat.service || error
+systemctl enable iptables-nat.service
 
 echo
 read -p "The system must be restarted. Restart now? [y|n] " -n 1 restart
