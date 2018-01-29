@@ -15,21 +15,32 @@ function error {
 # Get informations
 while [ true ]; do
 	clear
-	read -p "Custmer Name: " customer
-	read -p "Server addresse (e.g.: cust.dyndns.org): " server_addr
-	read -p "Customer network (e.g.: 192.168.2.0): " cust_network
-	read -p "Customer netmask (e.g.: 255.255.255.0): " cust_netmask
-	read -p "Customer vpn network (e.g.: 10.8.0.0): " vpn_network
-	read -p "Port (e.g.: 1194): " port
-	read -p "Country (e.g.: DE): " country
-	read -p "Province (e.g.: BY): " province
-	read -p "City (e.g.: Illertissen): " city
-	read -p "Organisation (e.g.: Computer Service Schmid): " org
-	read -p "Email (e.g.: service@computerserviceschmid.de): " email
-	read -p "Organisation Unit (e.g.: Verkauf): " ounit
-
-	read -p "Server IP (e.g.: 192.168.2.201/24): " server_ip
-	read -p "Gateway IP (e.g.: 192.168.2.100): " gateway
+	read -p "Server addresse [comse.dyndns.org]: " server_addr
+	if [ "${server_addr}" = "" ]; then server_addr="comse.dyndns.org"; fi
+	read -p "Port [1194]: " port
+	if [ "${port}" = "" ]; then sport="1194"; fi
+	read -p "Server IP [192.168.99.205/24]: " server_ip
+	if [ "${server_ip}" = "" ]; then server_ip="192.168.99.205/24"; fi
+	read -p "Gateway IP [192.168.99.100]: " gateway
+	if [ "${gateway}" = "" ]; then gateway="192.168.99.100"; fi
+	read -p "Customer network [192.168.99.0]: " cust_network
+	if [ "${cust_network}" = "" ]; then cust_network="192.168.99.0"; fi
+	read -p "Customer netmask [255.255.255.0]: " cust_netmask
+	if [ "${cust_netmask}" = "" ]; then cust_netmask="255.255.255.0"; fi
+	read -p "Customer vpn network [10.99.0.0]: " vpn_network
+	if [ "${vpn_network}" = "" ]; then vpn_network="10.99.0.0"; fi
+	read -p "Country [DE]: " country
+	if [ "${country}" = "" ]; then country="DE"; fi
+	read -p "Province [BY]: " province
+	if [ "${province}" = "" ]; then province="BY"; fi
+	read -p "City [Illertissen]: " city
+	if [ "${city}" = "" ]; then city="Illertissen"; fi
+	read -p "Organisation [Computer Service Schmid]: " org
+	if [ "${org}" = "" ]; then org="Computer Service Schmid"; fi
+	read -p "Email [info@computerserviceschmid.de]: " email
+	if [ "${email}" = "" ]; then email="info@computerserviceschmid.de"; fi
+	read -p "Organisation Unit [EDV]: " ounit
+	if [ "${ounit}" = "" ]; then ounit="EDV"; fi
 
 	read -p "First VPN User: " user
 	read -p "Passowrd: " password
@@ -138,3 +149,9 @@ gcc -o /etc/openvpn/userauth ${tempfolder}/userauth.c || error
 echo "${user}:${password}" > /etc/openvpn/user.txt || error
 
 mkdir /etc/openvpn/ccd || error
+
+read -p "The system must be restarted. Restart now? [y|n] " -n 1 restart
+echo
+if [ "${restart}" == "y" ]; then
+	reboot
+fi
