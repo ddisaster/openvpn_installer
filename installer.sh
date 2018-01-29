@@ -148,3 +148,9 @@ gcc -o /etc/openvpn/userauth ${tempfolder}/userauth.c || error
 echo "${user}:${password}" > /etc/openvpn/user.txt || error
 
 mkdir /etc/openvpn/ccd || error
+
+read -p "The system must be restarted. Restart now? [y|n] " -n 1 restart
+echo
+if [ "${restart}" == "y" ]; then
+	reboot
+fi
