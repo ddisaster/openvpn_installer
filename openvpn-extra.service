@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/sbin/iptables -t nat -A POSTROUTING -o INTERFACE -j MASQUERADE
+ExecStart=/etc/openvpn/autostart.sh
 
 [Install]
 WantedBy=multi-user.target
