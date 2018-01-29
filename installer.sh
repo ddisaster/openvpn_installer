@@ -52,9 +52,8 @@ while [ true ]; do
 	fi
 done
 
-route=$(ip route | grep default)
 found=false
-for i in $route; do
+for i in $(ip route | grep default); do
 	if $found; then
 		interface=$i
 		break
@@ -151,6 +150,7 @@ echo "${user}:${password}" > /etc/openvpn/user.txt || error
 
 mkdir /etc/openvpn/ccd || error
 
+echo
 read -p "The system must be restarted. Restart now? [y|n] " -n 1 restart
 echo
 if [ "${restart}" == "y" ]; then
