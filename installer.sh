@@ -15,7 +15,6 @@ function error {
 # Get informations
 while [ true ]; do
 	clear
-	read -p "Custmer Name: " customer
 	read -p "Server addresse (e.g.: cust.dyndns.org): " server_addr
 	read -p "Customer network (e.g.: 192.168.2.0): " cust_network
 	read -p "Customer netmask (e.g.: 255.255.255.0): " cust_netmask
