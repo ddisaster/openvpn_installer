@@ -49,9 +49,12 @@ apt-get install -y git openvpn easy-rsa iptables vim gcc || error
 
 # enable ip_forwarding
 cp /etc/sysctl.conf /etc/sysctl.conf.bak || error
-cat /etc/sysctl.conf | sed -e "s/#net.ipv4.ip_forward=0/net.ipv4.ip_forward=1/g" > /etc/sysctl.conf || error
+cat /etc/sysctl.conf.bak | sed -e "s/#net.ipv4.ip_forward=0/net.ipv4.ip_forward=1/g" > /etc/sysctl.conf || error
 rm /etc/sysctl.conf.bak || error
 sysctl -w net.ipv4.ip_forward=1 || error
+
+cat ${tempfolder}/iptables-nat.service | sed -e "s/INTERFACE/${interfase}/g" > /etc/systemd/system/iptables-nat.service
+systemctl enable iptables-nat.service
 
 # generate keys
 rm -r /etc/openvpn
