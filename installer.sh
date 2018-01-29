@@ -52,6 +52,18 @@ while [ true ]; do
 	fi
 done
 
+route=$(ip route | grep default)
+found=false
+for i in $route; do
+	if $found; then
+		interface=$i
+		break
+	fi
+	if [ "$i" = "dev" ]; then
+		found=true
+	fi
+done
+
 # update and install packages
 apt-get update || error
 apt-get upgrade -y || error 
@@ -64,7 +76,7 @@ cat /etc/sysctl.conf.bak | sed -e "s/#net.ipv4.ip_forward=0/net.ipv4.ip_forward=
 rm /etc/sysctl.conf.bak || error
 sysctl -w net.ipv4.ip_forward=1 || error
 
-cat ${tempfolder}/iptables-nat.service | sed -e "s/INTERFACE/${interfase}/g" > /etc/systemd/system/iptables-nat.service
+cat ${tempfolder}/iptables-nat.service | sed -e "s/INTERFACE/${interface}/g" > /etc/systemd/system/iptables-nat.service
 systemctl enable iptables-nat.service
 
 # generate keys
@@ -73,17 +85,6 @@ mkdir /etc/openvpn || error
 cp -r /usr/share/easy-rsa /etc/openvpn/easy-rsa || error
 mkdir /etc/openvpn/easy-rsa/keys || error
 
-route=$(ip route | grep default)
-found=false
-for i in $route; do
-	if $found; then
-		interface=$i
-		break
-	fi
-	if [ "$i" = "dev" ]; then
-		found=true
-	fi
-done
 mv /etc/network/interfaces /etc/network/interfaces.backup || error
 grep -v ${interface} /etc/network/interfaces.backup > /etc/network/interfaces || error
 echo "allow-hotplug ${interface}" >> /etc/network/interfaces || error
