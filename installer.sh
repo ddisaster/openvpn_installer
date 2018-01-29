@@ -71,6 +71,7 @@ for i in $route; do
 done
 mv /etc/network/interfaces /etc/network/interfaces.backup || error
 grep -v ${interface} /etc/network/interfaces.backup > /etc/network/interfaces || error
+echo "allow-hotplug ${interface}" >> /etc/network/interfaces || error
 echo "iface ${interface} inet static" >> /etc/network/interfaces || error
 echo "   address ${server_ip}" >> /etc/network/interfaces || error
 echo "   gateway ${gateway}" >> /etc/network/interfaces || error
@@ -84,7 +85,7 @@ cp ${tempfolder}/server.conf /etc/openvpn/server.conf || error
 echo "port ${port}" >> /etc/openvpn/server.conf || error
 echo "server ${vpn_network} 255.255.255.0" >> /etc/openvpn/server.conf || error
 echo "push \"route ${cust_network} ${cust_netmask}\"" >> /etc/openvpn/server.conf || error
-echo "route ${cust_network} ${cust_netmask}" >> /etc/openvpn/server.conf || error
+#echo "route ${cust_network} ${cust_netmask}" >> /etc/openvpn/server.conf || error
 
 rm /etc/openvpn/easy-rsa/vars || error
 cp ${tempfolder}/vars /etc/openvpn/easy-rsa/vars || error
@@ -131,3 +132,5 @@ echo "</key>" >> /etc/openvpn/client.ovpn || error
 gcc -o /etc/openvpn/userauth ${tempfolder}/userauth.c || error
 
 echo "${user}:${password}" > /etc/openvpn/user.txt || error
+
+mkdir /etc/openvpn/ccd || error
