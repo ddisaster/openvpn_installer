@@ -69,13 +69,6 @@ apt-get upgrade -y || error
 apt-get dist-upgrade -y || error
 apt-get install -y git openvpn easy-rsa iptables vim gcc || error
 
-# enable ip_forwarding
-cp ${tempfolder}/autostart.sh /etc/openvpn/autostart.sh
-echo "/sbin/iptables -t nat -A POSTROUTING -o ${interface} -j MASQUERADE" >> /etc/openvpn/autostart.sh || error
-
-cp ${tempfolder}/openvpn-extra.service /etc/systemd/system/openvpn-extra.service || error
-systemctl enable openvpn-extra.service || error
-
 # generate keys
 rm -r /etc/openvpn
 mkdir /etc/openvpn || error
@@ -94,6 +87,13 @@ tempfolder=$(mktemp -d) || error
 git clone https://github.com/ddisaster/openvpn_installer.git ${tempfolder} || error
 
 cp ${tempfolder}/server.conf /etc/openvpn/server.conf || error
+
+# enable ip_forwarding
+cp ${tempfolder}/autostart.sh /etc/openvpn/autostart.sh
+echo "/sbin/iptables -t nat -A POSTROUTING -o ${interface} -j MASQUERADE" >> /etc/openvpn/autostart.sh || error
+
+cp ${tempfolder}/openvpn-extra.service /etc/systemd/system/openvpn-extra.service || error
+systemctl enable openvpn-extra.service || error
 
 echo "port ${port}" >> /etc/openvpn/server.conf || error
 echo "server ${vpn_network} 255.255.255.0" >> /etc/openvpn/server.conf || error
