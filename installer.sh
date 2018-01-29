@@ -65,11 +65,12 @@ mkdir /etc/openvpn/easy-rsa/keys || error
 route=$(ip route | grep default)
 found=false
 for i in $route; do
-	if [ ${i} == "dev" ]; then
-		found=true
+	if $found; then
+		interface=$i
+		break
 	fi
-	if [ found ]; then
-		interface=${i}
+	if [ "$i" = "dev" ]; then
+		found=true
 	fi
 done
 mv /etc/network/interfaces /etc/network/interfaces.backup || error
