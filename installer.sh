@@ -18,7 +18,7 @@ while [ true ]; do
 	read -p "Server addresse [comse.dyndns.org]: " server_addr
 	if [ "${server_addr}" = "" ]; then server_addr="comse.dyndns.org"; fi
 	read -p "Port [1194]: " port
-	if [ "${port}" = "" ]; then sport="1194"; fi
+	if [ "${port}" = "" ]; then port="1194"; fi
 	read -p "Server IP [192.168.99.205/24]: " server_ip
 	if [ "${server_ip}" = "" ]; then server_ip="192.168.99.205/24"; fi
 	read -p "Gateway IP [192.168.99.100]: " gateway
