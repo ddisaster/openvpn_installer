@@ -149,12 +149,20 @@ echo "${user}:${password}" > /etc/openvpn/user.txt || error
 
 mkdir /etc/openvpn/ccd || error
 
+user=$(ls /home | head -n 1) || error
+cp /etc/openvpn/client.ovpn /home/${user}/client.ovpn || error
+chown ${user}/${user} /home/${user}/client.ovpn || error
+
 echo
 read -p "Do you want to edit the user file? [y|n] " -n 1 edit_user
 echo
 if [ "${edit_user}" = "y" ]; then
 	nano /etc/openvpn/user.txt
 fi
+
+echo 
+echo -p "The config file should be available at \"/home/${user}/client.ovpn\" [Press any key to continue] " -n 1 asdf
+echo
 
 echo
 read -p "The system must be restarted. Restart now? [y|n] " -n 1 restart
