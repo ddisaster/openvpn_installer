@@ -44,6 +44,7 @@ while [ true ]; do
 
 	read -p "First VPN User: " user
 	read -p "Passowrd: " password
+	if [ "${user}" = "" ]; then user="#user"; password="password"; fi
 
 	read -p "All Informations correct? [y|n] " -n 1 finished
 	echo
