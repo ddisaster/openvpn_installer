@@ -149,8 +149,15 @@ echo "${user}:${password}" > /etc/openvpn/user.txt || error
 mkdir /etc/openvpn/ccd || error
 
 echo
+read -p "Do you want to edit the user file? [y|n] " -n 1 edit_user
+echo
+if [ "${edit_user}" = "y" ]; then
+	nano /etc/openvpn/user.txt
+fi
+
+echo
 read -p "The system must be restarted. Restart now? [y|n] " -n 1 restart
 echo
-if [ "${restart}" == "y" ]; then
+if [ "${restart}" = "y" ]; then
 	reboot
 fi
