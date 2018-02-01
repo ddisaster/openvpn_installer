@@ -151,7 +151,7 @@ mkdir /etc/openvpn/ccd || error
 
 user=$(ls /home | head -n 1) || error
 cp /etc/openvpn/client.ovpn /home/${user}/client.ovpn || error
-chown ${user}/${user} /home/${user}/client.ovpn || error
+chown ${user}:${user} /home/${user}/client.ovpn || error
 
 echo
 read -p "Do you want to edit the user file? [y|n] " -n 1 edit_user
