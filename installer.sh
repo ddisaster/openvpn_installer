@@ -48,7 +48,7 @@ while [ true ]; do
 
 	read -p "All Informations correct? [y|n] " -n 1 finished
 	echo
-	if [ "${finished}" == "y" ]; then
+	if [ "${finished}" = "y" ]; then
 		break
 	fi
 done
