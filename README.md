@@ -21,3 +21,6 @@
 	wget https://raw.githubusercontent.com/ddisaster/openvpn_installer/master/installer.sh
 - starten:
 	bash installer.sh
+- Userfile downloaden:
+	- Mit WinSCP Typ ssh auf den Server verbinden (den vergebenen usernamen verwenden)
+	- Das ovpn File sollte sich im Homeverzeichnis es Users befinden
