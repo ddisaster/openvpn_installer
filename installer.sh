@@ -101,7 +101,7 @@ echo "server ${vpn_network} 255.255.255.0" >> /etc/openvpn/server.conf || error
 echo "push \"route ${cust_network} ${cust_netmask}\"" >> /etc/openvpn/server.conf || error
 #echo "route ${cust_network} ${cust_netmask}" >> /etc/openvpn/server.conf || error
 
-rm /etc/openvpn/easy-rsa/vars || error
+rm /etc/openvpn/easy-rsa/vars
 cp ${tempfolder}/vars /etc/openvpn/easy-rsa/vars || error
 
 echo "export KEY_COUNTRY=\"${country}\"" >> /etc/openvpn/easy-rsa/vars || error
