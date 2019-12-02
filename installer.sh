@@ -171,5 +171,5 @@ echo
 read -p "The system must be restarted. Restart now? [y|n] " -n 1 restart
 echo
 if [ "${restart}" = "y" ]; then
-	reboot
+	systemctl reboot
 fi
