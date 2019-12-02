@@ -114,7 +114,7 @@ echo "export KEY_OU=\"${ounit}\"" >> /etc/openvpn/easy-rsa/vars || error
 
 openssl dhparam -out /etc/openvpn/dh2048.pem 2048 || error
 
-cp /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf || error
+cp ${tempfolder}/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf || error
 
 cd /etc/openvpn/easy-rsa || error
 source vars || error
