@@ -116,6 +116,7 @@ openssl dhparam -out /etc/openvpn/dh2048.pem 2048 || error
 
 cp ${tempfolder}/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf || error
 cp ${tempfolder}/whichopensslcnf /etc/openvpn/easy-rsa/whichopensslcnf || error
+cp ${tempfolder}/clean-all /etc/openvpn/easy-rsa/clean-all || error
 
 cd /etc/openvpn/easy-rsa || error
 source vars || error
