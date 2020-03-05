@@ -18,7 +18,7 @@
 	- auf /dev/sda
 - als root anmelden (später per ssh als user anmelden (wie oben angelegt) und mit su zum root-user wechseln)
 - Installationsscript herungerladen: 
-	wget https://raw.githubusercontent.com/ddisaster/openvpn_installer/master/installer.sh
+	wget openvpn.comse.eu
 - starten:
 	bash installer.sh
 - Userfile downloaden:
